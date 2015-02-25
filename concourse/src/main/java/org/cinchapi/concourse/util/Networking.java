@@ -23,9 +23,13 @@
  */
 package org.cinchapi.concourse.util;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.ServerSocket;
+import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.Random;
 
 import com.google.common.base.Throwables;
 
@@ -77,7 +81,37 @@ public final class Networking {
             }
         }
         return HOST_ADDRESS;
+    }
 
+    /**
+     * Get an open port on the local machine in the port range between
+     * {@value #MIN_PORT} and {@value #MAX_PORT}.
+     * 
+     * @return the port
+     */
+    public static int getOpenPort() {
+        int port = RAND.nextInt(MIN_PORT) + (PORT_RANGE);
+        return isOpenPort(port) ? port : getOpenPort();
+    }
+
+    /**
+     * Return {@code true} if the {@code port} is available on the local
+     * machine.
+     * 
+     * @param port
+     * @return {@code true} if the port is available
+     */
+    private static boolean isOpenPort(int port) {
+        try {
+            new ServerSocket(port).close();
+            return true;
+        }
+        catch (SocketException e) {
+            return false;
+        }
+        catch (IOException e) {
+            throw Throwables.propagate(e);
+        }
     }
 
     /**
@@ -106,6 +140,11 @@ public final class Networking {
      * The number of available ports that can be considered "companion" ports.
      */
     private static final int PORT_RANGE = MAX_PORT - MIN_PORT;
+
+    /**
+     * Class wide random number generator
+     */
+    private static final Random RAND = new Random();
 
     private Networking() {/* noop */}
 
