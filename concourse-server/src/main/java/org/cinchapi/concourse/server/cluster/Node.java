@@ -51,7 +51,7 @@ public class Node implements ClusterService.Iface {
     private final String address;
 
     protected Node(List<String> cluster) throws TTransportException {
-        this.address = Networking.getHostAddress() + ":"
+        this.address = Networking.getIpAddress("localhost") + ":"
                 + GlobalState.CLIENT_PORT;
         System.out.println(address);
         TServerSocket socket = new TServerSocket(GlobalState.CHATTER_PORT);
@@ -63,9 +63,9 @@ public class Node implements ClusterService.Iface {
         args.executorService(Executors
                 .newCachedThreadPool(new ThreadFactoryBuilder().setNameFormat(
                         "[" + address + "]Chatter" + "-%d").build()));
-//        for (String node : cluster) {
-//            System.out.println(node);
-//        }
+        // for (String node : cluster) {
+        // System.out.println(node);
+        // }
     }
 
     @Override
