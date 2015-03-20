@@ -63,9 +63,9 @@ public class Node implements ClusterService.Iface {
         args.executorService(Executors
                 .newCachedThreadPool(new ThreadFactoryBuilder().setNameFormat(
                         "[" + address + "]Chatter" + "-%d").build()));
-        // for (String node : cluster) {
-        // System.out.println(node);
-        // }
+//        for (String node : cluster) {
+//            System.out.println(node);
+//        }
     }
 
     @Override
