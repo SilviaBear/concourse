@@ -75,11 +75,45 @@ public class ReflectionTest {
         A a = new A(Random.getString());
         Reflection.get("foo", a);
     }
+
+    @Test
+    public void testNullValue(){
+        A a = new A();
+        Assert.assertNull(Reflection.get("string", b));
+    }
+
+    @Test
+    public void testGetShadowedField(){
+        B b = new B(Random.getInt());
+        Assert.assertEquals("ben", Reflection.get("string", b));
+    }
+
+    @Test
+    public void testPrimitiveArray() {
+        C c = new C(false);
+        Assert.assertArrayEquals({1, 2}, Reflection.get("intArray", c));
+    }
+
+    @Test
+    public void testEmptyArray() {
+        C c = new C(true);
+        int[] expected = {};
+        Assert.assertArrayEquals(expected, Reflection.get("intArray", c));
+    }
+
+    @Test
+    public void testObjectArray() {
+        D d = new D();
+        String[] expected = {"ben"};
+        Assert.assertArrayEquals(expected, Reflection.get("stringArray", d));
+    }
     
     private static class A {
         
         private final String string;
-        
+
+        public A() {
+        }
         public A(String string){
             this.string = string;
         }
@@ -100,14 +134,37 @@ public class ReflectionTest {
     private static class B extends A {
         
         private final int integer;
+        private final String string = "ben";
         
         public B(int integer){
-            super("default");
+            super();
             this.integer = integer;
         }
-        
+
         private long integer(int multiple){
             return multiple * integer;
+        }
+    }
+
+    private static class C {
+        private int[] intArray;
+
+        public C(boolean isEmpty){
+            if(isEmpty) {
+                intArray = {};
+            }
+            else{
+                intArray = {1, 2};
+            }
+        }
+
+    }
+
+    private static class D {
+        private String[] stringArray;
+
+        public D(){
+            stringArray = {"ben"};
         }
     }
 
