@@ -79,33 +79,34 @@ public class ReflectionTest {
     @Test
     public void testNullValue(){
         A a = new A();
-        Assert.assertNull(Reflection.get("string", b));
+        Assert.assertNull(Reflection.get("string", a));
     }
 
     @Test
     public void testGetShadowedField(){
-        B b = new B(Random.getInt());
-        Assert.assertEquals("ben", Reflection.get("string", b));
+        F f = new F();
+        Assert.assertEquals("ben", Reflection.get("string", f));
     }
 
     @Test
     public void testPrimitiveArray() {
-        C c = new C(false);
-        Assert.assertArrayEquals({1, 2}, Reflection.get("intArray", c));
+        C c = new C();
+	int expected[] = {1, 2};
+        Assert.assertArrayEquals(expected, (int[])Reflection.get("intArray", c));
     }
 
     @Test
     public void testEmptyArray() {
-        C c = new C(true);
-        int[] expected = {};
-        Assert.assertArrayEquals(expected, Reflection.get("intArray", c));
+        E e = new E();
+        int expected[] = new int[0];
+        Assert.assertArrayEquals(expected, (int[])Reflection.get("intArray", e));
     }
 
     @Test
     public void testObjectArray() {
         D d = new D();
-        String[] expected = {"ben"};
-        Assert.assertArrayEquals(expected, Reflection.get("stringArray", d));
+        String expected[] = {"ben"};
+        Assert.assertArrayEquals(expected, (String[])Reflection.get("stringArray", d));
     }
     
     private static class A {
@@ -113,6 +114,7 @@ public class ReflectionTest {
         private final String string;
 
         public A() {
+	    string = null;
         }
         public A(String string){
             this.string = string;
@@ -134,10 +136,9 @@ public class ReflectionTest {
     private static class B extends A {
         
         private final int integer;
-        private final String string = "ben";
         
         public B(int integer){
-            super();
+            super("default");
             this.integer = integer;
         }
 
@@ -147,25 +148,18 @@ public class ReflectionTest {
     }
 
     private static class C {
-        private int[] intArray;
-
-        public C(boolean isEmpty){
-            if(isEmpty) {
-                intArray = {};
-            }
-            else{
-                intArray = {1, 2};
-            }
-        }
-
+        private int intArray[] = {1, 2};
     }
 
     private static class D {
-        private String[] stringArray;
-
-        public D(){
-            stringArray = {"ben"};
-        }
+        private String stringArray[] = {"ben"};
     }
 
+    private static class E {
+	private int intArray[] = {};
+    }
+
+    private static class F extends A {
+	private final String string = "ben";
+    }
 }
