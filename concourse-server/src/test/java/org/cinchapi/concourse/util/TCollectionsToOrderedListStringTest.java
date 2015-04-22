@@ -30,7 +30,7 @@ public class TCollectionsToOrderedListStringTest {
 	a2.add(2);
 	return Arrays.asList(new Object[][] {
 		{a1, ""},
-		{a2, "1.1\n2.2\n"}, 
+		{a2, "1. 1\n2. 2\n"}, 
 		{null, ""}
 	    }
 );
