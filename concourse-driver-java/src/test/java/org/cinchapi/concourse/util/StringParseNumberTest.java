@@ -25,11 +25,6 @@ public class StringParseNumberTest {
 
     @Test
     public void testPositiveFloat() {
-	assertEquals(new Integer(-1), Strings.tryParseNumber("-1"));
-    }
-
-    @Test
-    public void testPositiveFloat() {
 	assertEquals(new Float(3.45), Strings.tryParseNumber("3.45"));
     }
     

@@ -10,7 +10,7 @@ import com.google.common.primitives.Floats;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 
-public final class StringsMutated2 {
+public final class StringsMutated8 {
     @Nullable
     public static Number tryParseNumber(String value) {
         if(value == null || value.length() == 0) {
